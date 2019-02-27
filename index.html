@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Book Finder | Powered by Google Books</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  
+  <link rel="stylesheet" href="./css/app.css">
+  <link rel="stylesheet" href="./css/app-state.css">
+</head>
+<body>
+  <header class="header container">
+    <h1><i class="fas fa-book"></i>Book Finder</h1>
+  </header>
+
+  <main class="main container state__default">
+    <form class="search-form">
+      <input type="search" placeholder="Search by book title or author..." name="searchField" class="search-field" autofocus>
+      <input type="button" value="Search" name="btnSearch" class="btn btn-search">
+    </form>
+    
+    <div class="default-state-msg">
+      <p><i class="far fa-frown"></i> Nothing here yet &mdash; try searching for a book</p>
+    </div>
+
+    <div class="query-error-msg">
+      <p>Error: Please provide a search query</p>
+    </div>
+
+    <div class="empty-result-msg">
+      <p><i class="far fa-frown"></i> Nothing found! Try another query</p>
+    </div>
+
+    <div class="fetching-state-icon">
+      <i class="fas fa-spinner fa-pulse"></i>
+    </div>
+    
+    <ul class="books-list">
+      <script type="text/template" class="books-item__template">
+        <li class="books-item">
+          <div class="book-thumbnail">
+            <img src={{thumbnail-url}} alt={{thumbnail-alt}}>
+          </div>
+
+          <div class="book-info">
+            <h2>{{book-title}}</h2>
+            <p>Author: {{book-author}}</p>
+            <p>Publisher: {{book-publisher}}</p>
+            <a href={{book-url}} target="_blank" class="btn btn-book">See this Book</a>
+          </div>          
+        </li>
+      </script>
+    </ul>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      &copy;2019 &ndash; Book Finder by <a href="https://github.com/abdulfatai360">Abdulfatai</a>
+    </div>
+  </footer>
+</body>
+</html>
