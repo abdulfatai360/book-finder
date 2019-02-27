@@ -1,0 +1,223 @@
+/* General styles for top-level containers */
+
+html {
+	box-sizing: border-box;
+  font-size: 62.5%;
+  overflow-x: hidden;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #a0a0a0;
+  background-color: #f1f1f1;
+  font: 400 1.5rem/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* Styles for page layout */
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+	padding: 0;
+	border: 0;
+  outline: 0;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 960px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 1em;
+  text-align: center;
+}
+
+/* Typography styles */
+
+h2,
+p {
+	margin-bottom: 0.5em;
+}
+
+h1 {
+  padding-top: 1.2em;
+	font-size: 2.5em;
+  font-weight: 700;
+}
+
+h2 {
+	font-size: 1.3em;
+}
+
+/* Styles for links */
+
+a {
+  text-decoration: none;
+}
+
+/* Styles for buttons */
+
+.btn {
+	margin: 0;
+  padding: 6px 15px;
+	color: #fff;
+  background-color: #0fce8a;
+  font-size: 0.9em;
+	font-weight: 500;
+	letter-spacing: 0.5px;
+	cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.btn:hover,
+.btn:active {
+	background-color: #22b484;
+}
+
+.btn-search {
+	border: 0;
+  margin-top: 15px;
+}
+
+.btn-book {
+  width: 100%;
+  margin-top: 25px;
+  display: inline-block;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* styles for list items */
+
+ol,
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Styles for search box */
+
+.main {
+  min-height: 78vh;
+}
+
+.search-form {
+  padding: 10px;
+  margin: 0 auto;
+  max-width: 550px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+}
+
+.search-field {
+  width: 100%;
+  padding: 6px;
+  margin-top: 15px;
+  border: 1px solid #c4d3e0;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+}
+
+.search-field:focus {
+  border-color:#316396;
+}
+
+/* Styles for books list */
+
+.books-list {
+  padding-bottom: 2em;
+  font-size: 0.9em;
+  text-align: left;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.books-item {
+  width: 100%;
+  padding: 15px 15px;
+  margin-top: 45px;
+  /* margin-left: auto;
+  margin-right: auto; */
+  background-color: #fefefe;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.book-thumbnail {
+  flex: 1 1 30%;
+  margin-top: -25px;
+}
+
+.book-thumbnail img {
+  max-width: 100%;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.33);
+}
+
+.book-info {
+  flex: 1 1 65%;
+  padding-left: 20px;
+}
+
+.book-info h2 {
+  color: #737373;
+  line-height: 1.2;
+}
+
+/* Styes for footer */
+
+.footer {
+  border-top: 1px solid #a0a0a0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 0.9em;
+}
+
+.footer a {
+  font-weight: 500;
+  color: #a0a0a0;
+  transition: all 0.5s ease;
+}
+
+.footer a:hover {
+  color: #737373;
+}
+
+/* Responsive styles */
+
+@media (min-width: 450px) {
+  .search-field {
+    flex: 1 0 70%;
+  }
+
+  h2 {
+    font-size: 1.6em;
+  }
+}
+
+@media (min-width: 600px) {
+  .books-item {
+    width: 48%;
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    font-size: 1.7rem;
+  }
+}

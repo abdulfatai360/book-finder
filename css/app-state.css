@@ -1,0 +1,77 @@
+
+/* Styles for dynamically updating page */
+
+.query-error-msg {
+  margin-bottom: 20px;
+  color: #901821;
+  font-size: 0.9em;
+}
+
+.fetching-state-icon {
+  font-size: 3em;
+}
+
+/* for app default state */
+
+.state__default .default-state-msg {
+  display: block;
+}
+
+.state__default .query-error-msg,
+.state__default .empty-result-msg,
+.state__default .fetching-state-icon,
+.state__default .books-list {
+  display: none;
+}
+
+/* for empty string query */
+
+.state__query-error .query-error-msg,
+.state__query-error .empty-result-msg {
+  display: block;
+}
+
+.state__query-error .default-state-msg,
+.state__query-error .fetching-state-icon,
+.state__query-error .books-list {
+  display: none;
+}
+
+/* for empty result */
+
+.state__empty-result .empty-result-msg {
+  display: block;
+}
+
+.state__empty-result .default-state-msg,
+.state__empty-result .query-error-msg,
+.state__empty-result .fetching-state-icon,
+.state__empty-result .books-list {
+  display: none;
+}
+
+/* when fetching result */
+
+.state__fetching-books .fetching-state-icon {
+  display: block;
+}
+
+.state__fetching-books .default-state-msg,
+.state__fetching-books .query-error-msg,
+.state__fetching-books .empty-result-msg,
+.state__fetching-books .books-list {
+  display: none;
+}
+
+/* when result is returned */
+
+.state__books-found .books-list {
+  display: flex;
+}
+
+.state__books-found .default-state-msg,
+.state__books-found .query-error-msg,
+.state__books-found .fetching-state-icon,
+.state__books-found .empty-result-msg {
+  display: none;
+}
