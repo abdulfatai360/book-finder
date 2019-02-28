@@ -1,61 +1,57 @@
+/* ******** Global variables ******** */
 
 const mainElem = document.querySelector('.main');
 const initialMainElemCls = `main container`;
 const searchForm = document.querySelector('.search-form');
-const bookItemTemplate = document.querySelector('.books-item__template');
 
-const response = {
-  kind: "books#volumes",
-  totalItems: 429,
-  items: [
-    {
-      id: "szF_pLGmJTQC",
-      volumeInfo: {
-        title: "Baptizing Harry Potter",
-        authors: [
-          "Luke Bell"
-        ],
-        publisher: "Paulist Press",
-        imageLinks: {
-          thumbnail: "http://books.google.com/books/content?id=szF_pLGmJTQC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-        },
-        infoLink: "http://books.google.com/books?id=szF_pLGmJTQC&dq=intitle:harry+potter&hl=&source=gbs_api"
-      }
-    },
-    {
-      id: "DKcWE3WXoj8C",
-      volumeInfo: {
-        title: "Harry Potter and International Relations",
-        // authors: [
-        //   "Daniel H. Nexon",
-        //   "Iver B. Neumann"
-        // ],
-        // publisher: "Rowman & Littlefield",
-        // imageLinks: {
-        //   thumbnail: "http://books.google.com/books/content?id=DKcWE3WXoj8C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-        // },
-        infoLink: "http://books.google.com/books?id=DKcWE3WXoj8C&dq=intitle:harry+potter&hl=&source=gbs_api"
-      }
-    },
-    {
-      id: "pBjDSPhUjp8C",
-      volumeInfo: {
-        title: "The Ultimate Harry Potter and Philosophy",
-        authors: [
-          "William Irwin",
-          "Gregory Bassham",
-          "Iver B. Neumann"
-        ],
-        publisher: "John Wiley & Sons",
-        imageLinks: {
-          thumbnail: "http://books.google.com/books/content?id=pBjDSPhUjp8C&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-        },
-        infoLink: "http://books.google.com/books?id=pBjDSPhUjp8C&dq=intitle:harry+potter&hl=&source=gbs_api"
-      }
-    },
-  ]
-};
+/* ******** Helper functions and class ******** */
 
+function noNetworkErrHandler() {
+  const connStatus = document.querySelector('.conn-status-msg p');
+  connStatus.textContent = 'We can not complete your search request. Please connect to the internet and search again';
+
+  mainElem.className = `${initialMainElemCls} state__conn-status`;
+  mainElem.classList.remove('state__fetching-books');
+}
+
+function slowNetworkErrHandler() {
+  return setTimeout(() => {
+    const connStatus = document.querySelector('.conn-status-msg p');
+    connStatus.textContent = 'Your network connection is slow. Please wait a while longer.';
+
+    mainElem.className = `${initialMainElemCls} state__conn-status`;
+    mainElem.classList.add('state__fetching-books');
+  }, 3000);
+}
+
+function makeBooksRequest(timeoutId) {
+  const searchTerm = searchForm.searchField.value
+    .split(' ')
+    .filter(str => str.length)
+    .join('+');
+
+  const apiKey = 'AIzaSyAq6zpPvvGsVxr3rcvzfDuSv1Jj-EBvYtE';
+  const queryStr = `q=intitle:${searchTerm}`;
+  const apiBaseUrl = 'https://www.googleapis.com/books/v1/volumes';
+  const fieldsToReturn = 'kind,totalItems,items(id,volumeInfo(title,authors,publisher,imageLinks(thumbnail),infoLink))';
+
+  fetch(apiBaseUrl + '?' + queryStr + '&' + apiKey + '&' + fieldsToReturn)
+    .then(res => res.json())
+    .then(bookCollection => {
+      if (!bookCollection.totalItems) {
+        mainElem.className = `${initialMainElemCls} state__empty-result`;
+        window.clearTimeout(timeoutId);
+        return;
+      }
+
+      renderBookItemContent(bookCollection);
+      window.clearTimeout(timeoutId);
+    })
+    .catch(err => {
+      noNetworkErrHandler();
+      window.clearTimeout(timeoutId);
+    });
+}
 class Book {
   static formatAuthors(authors = []) {
     if (!authors.length) return 'No authors found';
@@ -91,6 +87,7 @@ class Book {
 }
 
 function generateBookItemContent({ volumeInfo }) {
+  const bookItemTemplate = document.querySelector('.books-item__template');
   let template = bookItemTemplate.innerHTML;
 
   template = template.replace('{{thumbnail-url}}', Book.validateImageLinks(volumeInfo.imageLinks));
@@ -103,9 +100,10 @@ function generateBookItemContent({ volumeInfo }) {
   return template;
 }
 
-function renderBookItemContent() {
+function renderBookItemContent(bookCollection) {
   let htmlStr = '';
-  for (const book of response.items) htmlStr += generateBookItemContent(book);
+  for (const book of bookCollection.items) 
+    htmlStr += generateBookItemContent(book);
 
   document.querySelector('.books-list').innerHTML = htmlStr;
   mainElem.className = `${initialMainElemCls} state__books-found`;
@@ -117,14 +115,9 @@ function fetchBooks() {
 
   else {
     mainElem.className = `${initialMainElemCls} state__fetching-books`;
+    const timeoutId = slowNetworkErrHandler();
 
-    setTimeout(() => {
-      if (!response.items.length) {
-        mainElem.className = `${initialMainElemCls} state__empty-result`;
-        return;
-      }
-      renderBookItemContent();
-    }, 2000);
+    makeBooksRequest(timeoutId);
   }
 }
 
