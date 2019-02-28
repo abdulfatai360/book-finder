@@ -61,6 +61,10 @@ h2 {
 	font-size: 1.3em;
 }
 
+em {
+  font-style: italic;
+}
+
 /* Styles for links */
 
 a {
@@ -95,6 +99,7 @@ a {
   width: 100%;
   margin-top: 25px;
   display: inline-block;
+  align-self: flex-end;
   border-radius: 5px;
   text-align: center;
 }
@@ -170,13 +175,21 @@ ul {
 }
 
 .book-info {
-  flex: 1 1 65%;
+  height: 100%;
   padding-left: 20px;
+  flex: 1 1 65%;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .book-info h2 {
+  width: 100%;
   color: #737373;
   line-height: 1.2;
+}
+
+.book-info p {
+  width: 100%;
 }
 
 /* Styes for footer */
@@ -203,10 +216,6 @@ ul {
 @media (min-width: 450px) {
   .search-field {
     flex: 1 0 70%;
-  }
-
-  h2 {
-    font-size: 1.6em;
   }
 }
 
