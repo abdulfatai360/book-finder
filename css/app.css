@@ -3,7 +3,7 @@
 html {
 	box-sizing: border-box;
   font-size: 62.5%;
-  overflow-x: hidden;
+  overflow: hidden scroll;
 }
 
 html,
@@ -116,7 +116,7 @@ ul {
 /* Styles for search box */
 
 .main {
-  min-height: 78vh;
+  min-height: 76vh;
 }
 
 .search-form {
