@@ -6,9 +6,9 @@ const searchForm = document.querySelector('.search-form');
 
 /* ******** Helper functions and class ******** */
 
-function noNetworkErrHandler() {
+function clientErrHandler() {
   const connStatus = document.querySelector('.conn-status-msg p');
-  connStatus.textContent = 'We can not complete your search request. Please connect to the internet and search again';
+  connStatus.textContent = 'We can not complete your search request at the moment. Please check your network connection and try again';
 
   mainElem.className = `${initialMainElemCls} state__conn-status`;
   mainElem.classList.remove('state__fetching-books');
@@ -33,9 +33,9 @@ function makeBooksRequest(timeoutId) {
   const apiKey = 'AIzaSyAq6zpPvvGsVxr3rcvzfDuSv1Jj-EBvYtE';
   const queryStr = `q=intitle:${searchTerm}`;
   const apiBaseUrl = 'https://www.googleapis.com/books/v1/volumes';
-  const fieldsToReturn = 'kind,totalItems,items(id,volumeInfo(title,authors,publisher,imageLinks(thumbnail),infoLink))';
+  const fieldsToReturn = 'fields=kind,totalItems,items(id,volumeInfo(title,authors,publisher,imageLinks(thumbnail),infoLink))';
 
-  fetch(apiBaseUrl + '?' + queryStr + '&' + apiKey + '&' + fieldsToReturn)
+  fetch(apiBaseUrl + '?' + queryStr + '&' + fieldsToReturn + '&' + apiKey)
     .then(res => res.json())
     .then(bookCollection => {
       if (!bookCollection.totalItems) {
@@ -48,7 +48,8 @@ function makeBooksRequest(timeoutId) {
       window.clearTimeout(timeoutId);
     })
     .catch(err => {
-      noNetworkErrHandler();
+      console.log(err.message)
+      clientErrHandler();
       window.clearTimeout(timeoutId);
     });
 }
@@ -86,9 +87,12 @@ class Book {
   }
 }
 
-function generateBookItemContent({ volumeInfo }) {
-  const bookItemTemplate = document.querySelector('.books-item__template');
-  let template = bookItemTemplate.innerHTML;
+const bookItemTemplate = document
+  .querySelector('.books-item__template')
+  .innerHTML;
+
+function generateBookItemContent({ volumeInfo }, htmlTemplate) {
+  let template = htmlTemplate;
 
   template = template.replace('{{thumbnail-url}}', Book.validateImageLinks(volumeInfo.imageLinks));
   template = template.replace('{{thumbnail-alt}}', `${volumeInfo.title} Book Cover`);
@@ -103,11 +107,14 @@ function generateBookItemContent({ volumeInfo }) {
 function renderBookItemContent(bookCollection) {
   let htmlStr = '';
   for (const book of bookCollection.items) 
-    htmlStr += generateBookItemContent(book);
+    htmlStr += generateBookItemContent(book, bookItemTemplate);
 
   document.querySelector('.books-list').innerHTML = htmlStr;
   mainElem.className = `${initialMainElemCls} state__books-found`;
 }
+
+
+/* ******** Loading books from API ******** */
 
 function fetchBooks() {
   if (!searchForm.searchField.value) 
